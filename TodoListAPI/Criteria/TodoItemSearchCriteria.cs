@@ -12,5 +12,12 @@ namespace TodoListAPI.Criteria
         public string sort { get; set; }
 
         public bool isDescending { get; set; }
+
+        public TodoItemSearchCriteria(string _search, string _sort, bool _isDescending)
+        {
+            search = _search;
+            sort = _sort;
+            isDescending = _isDescending;
+        }
     }
 }

@@ -12,13 +12,17 @@ using System.Web.Http.Description;
 using TodoListAPI.Criteria;
 using TodoListAPI.Data;
 using TodoListAPI.Models;
+using TodoListAPI.Repositories;
 using TodoListAPI.Services;
 
 namespace TodoListAPI.Controllers
 {
     public class TodoItemsController : ApiController
     {
-        private TodoitemsService service = new TodoitemsService();
+        private TodoitemsService service = new TodoitemsService(new TodoItemRepository(new TodoListAPIContext()));
+
+        // OLD
+        //private TodoitemsService service = new TodoitemsService();
 
         // GET: api/TodoItems
         public IEnumerable<TodoItemDTO> Get(TodoItemSearchCriteria todoItemSearchCriteria)

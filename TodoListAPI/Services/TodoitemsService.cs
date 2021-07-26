@@ -17,18 +17,26 @@ namespace TodoListAPI.Services
 
         private MapperConfiguration config;
 
-        public TodoitemsService()
-        {
-            _todoItemRepository = new TodoItemRepository(new TodoListAPIContext());
+        // OLD
+        //public TodoitemsService()
+        //{
+        //    _todoItemRepository = new TodoItemRepository(new TodoListAPIContext());
 
-            config = new MapperConfiguration(cfg =>
-                   cfg.CreateMap<TodoItem, TodoItemDTO>()
-               );
-        }
+        //    config = new MapperConfiguration(cfg =>
+        //           cfg.CreateMap<TodoItem, TodoItemDTO>()
+        //       );
+        //}
 
         public TodoitemsService(ITodoItemRepository employeeRepository)
         {
             _todoItemRepository = employeeRepository;
+        }
+
+        public void ConfigureMapper()
+        {
+            config = new MapperConfiguration(cfg =>
+                   cfg.CreateMap<TodoItem, TodoItemDTO>()
+               );
         }
 
         public IEnumerable<TodoItemDTO> Get(TodoItemSearchCriteria todoItemSearchCriteria)
