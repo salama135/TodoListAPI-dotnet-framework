@@ -19,10 +19,12 @@ namespace TodoListAPI.Controllers
 {
     public class TodoItemsController : ApiController
     {
-        private TodoitemsService service = new TodoitemsService(new TodoItemRepository(new TodoListAPIContext()));
+        private ITodoitemsService service;
 
-        // OLD
-        //private TodoitemsService service = new TodoitemsService();
+        public TodoItemsController(ITodoitemsService _service)
+        {
+            service = _service;
+        }
 
         // GET: api/TodoItems
         public IEnumerable<TodoItemDTO> Get(TodoItemSearchCriteria todoItemSearchCriteria)
