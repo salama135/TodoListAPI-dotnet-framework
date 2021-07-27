@@ -1,4 +1,6 @@
+using AutoMapper;
 using System;
+using TodoListAPI.AutoMapperConfig;
 using TodoListAPI.Repositories;
 using TodoListAPI.Services;
 using Unity;
@@ -44,6 +46,12 @@ namespace TodoListAPI
             // TODO: Register your type's mappings here.
             container.RegisterType<ITodoItemRepository, TodoItemRepository>();
             container.RegisterType<ITodoItemsService, TodoItemsService>();
+
+            // ??
+            container.RegisterType<TodoListAPI.Data.TodoListAPIContext>();
+
+            AutoMapperConfigure.Register();
+
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using TodoListAPI.Repositories;
-using TodoListAPI.Resolvers;
 using TodoListAPI.Services;
 using Unity;
 using Unity.Lifetime;

@@ -12,22 +12,10 @@ namespace TodoListAPI.Data
 
         private ITodoItemRepository _todoItemRepository;
 
-        public TodoListAPI_DB_UnitOfWork(TodoListAPIContext context)
+        public TodoListAPI_DB_UnitOfWork(TodoListAPIContext context, TodoItemRepository todoItemRepository)
         {
             _context = context;
-        }
-
-        public ITodoItemRepository todoItemRepository
-        {
-            get
-            {
-                if(_todoItemRepository == null)
-                {
-                    _todoItemRepository = new TodoItemRepository(_context);
-                }
-
-                return _todoItemRepository;
-            }
+            _todoItemRepository = todoItemRepository;
         }
 
         public void Save()

@@ -12,11 +12,7 @@ namespace TodoListAPI.Repositories
     {
         private readonly TodoListAPIContext _context;
 
-        public TodoItemRepository()
-        {
-            _context = new TodoListAPIContext();
-        }
-
+        
         public TodoItemRepository(TodoListAPIContext context)
         {
             _context = context;
@@ -76,7 +72,7 @@ namespace TodoListAPI.Repositories
 
         public IEnumerable<TodoItem> GetSorted(string sortBy, bool isDesc)
         {
-            BreakUpGetSorted handler = GetSortedByTitle;
+            ChooseGetSorted handler = GetSortedByTitle;
             IEnumerable<TodoItem> result = null;
 
             if (sortBy == "CreationDate")
@@ -107,7 +103,7 @@ namespace TodoListAPI.Repositories
                 _context.TodoItems.OrderBy(t => t.CreationData).ToList();
         }
         
-        private delegate IEnumerable<TodoItem> BreakUpGetSorted(TodoListAPIContext _context, bool isDesc);
+        private delegate IEnumerable<TodoItem> ChooseGetSorted(TodoListAPIContext _context, bool isDesc);
 
         public IEnumerable<TodoItem> GetFiltered(string filterBy)
         {

@@ -6,13 +6,16 @@ using System.Web;
 
 namespace TodoListAPI.Models
 {
-    public class TodoItem
+    public class TodoItem: BaseEntity
     {
-        public int Id { get; set; }
         [Required]
         public string Title { get; set; }
         public DateTime CreationData { get; set; }
         public bool isDone { get; set; } = false;
         public string Description { get; set; }
+    }
+    public class BaseEntity
+    {
+        public int Id { get; set; }
     }
 }
