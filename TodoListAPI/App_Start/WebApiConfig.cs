@@ -15,10 +15,6 @@ namespace TodoListAPI
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-            //var container = new UnityContainer();
-            //container.RegisterType<ITodoItemRepository, TodoItemRepository>();
-            //container.RegisterType<ITodoitemsService, TodoitemsService>();
-            //config.DependencyResolver = new UnityResolver(container);
 
             // Web API routes
             config.MapHttpAttributeRoutes();

@@ -11,13 +11,13 @@ using TodoListAPI.Repositories;
 
 namespace TodoListAPI.Services
 {
-    public class TodoitemsService : ITodoitemsService
+    public class TodoItemsService : ITodoItemsService
     {
         private ITodoItemRepository _todoItemRepository;
 
         private MapperConfiguration config;
 
-        public TodoitemsService(ITodoItemRepository employeeRepository)
+        public TodoItemsService(ITodoItemRepository employeeRepository)
         {
             _todoItemRepository = employeeRepository;
             ConfigureMapper();

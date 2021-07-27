@@ -203,8 +203,8 @@
     <Compile Include="Repositories\ITodoItemRepository.cs" />
     <Compile Include="Repositories\TodoItemRepository.cs" />
     <Compile Include="Resolvers\UnityResolver.cs" />
-    <Compile Include="Services\ITodoitemsService.cs" />
-    <Compile Include="Services\TodoitemsService.cs" />
+    <Compile Include="Services\ITodoItemsService.cs" />
+    <Compile Include="Services\TodoItemsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />

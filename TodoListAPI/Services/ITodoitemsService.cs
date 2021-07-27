@@ -8,7 +8,7 @@ using TodoListAPI.Models;
 
 namespace TodoListAPI.Services
 {
-    public interface ITodoitemsService
+    public interface ITodoItemsService
     {
         IEnumerable<TodoItemDTO> Get(TodoItemSearchCriteria todoItemSearchCriteria);
         TodoItemDTO Get(int id);
