@@ -8,6 +8,10 @@ using System.Web.Http;
 using TodoListAPI;
 using TodoListAPI.Controllers;
 using System.Data.Entity;
+using TodoListAPI.Data;
+using TodoListAPI.Services;
+using TodoListAPI.Models;
+using System.Data.Entity.Migrations;
 
 namespace TodoListAPI.Tests.Controllers
 {

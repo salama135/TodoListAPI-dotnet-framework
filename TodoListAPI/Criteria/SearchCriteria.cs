@@ -6,7 +6,7 @@ using TodoListAPI.Models;
 
 namespace TodoListAPI.Criteria
 {
-    public abstract class SearchCriteria<T> where T : BaseEntity
+    public class SearchCriteria<T> where T : BaseEntity
     {
         public string Search { get; set; }
         public string SortBy { get; set; }
@@ -15,5 +15,15 @@ namespace TodoListAPI.Criteria
 
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
+
+        public SearchCriteria(string _search, string _sort, bool _isDescending, T todoItem, int pageIndex, int pageSize)
+        {
+            Search = _search;
+            SortBy = _sort;
+            IsDesc = _isDescending;
+            Entity = todoItem;
+            PageIndex = pageIndex;
+            PageSize = pageSize;
+        }
     }
 }

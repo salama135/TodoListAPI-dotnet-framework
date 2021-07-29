@@ -13,7 +13,7 @@ using TodoListAPI.Repositories;
 
 namespace TodoListAPI.Services
 {
-    public class TodoItemsService : ITodoItemsService
+    public class TodoItemsService : ITodoItemsService<TodoItemDTO>
     {
         private IUnitOfWork<TodoItem> _unitOfWork;
 
@@ -24,11 +24,19 @@ namespace TodoListAPI.Services
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<TodoItemDTO> Get(TodoItemSearchCriteria todoItemSearchCriteria)
+        public IEnumerable<TodoItemDTO> Get(SearchCriteria<TodoItemDTO> todoItemSearchCriteria)
         {
             IEnumerable<TodoItem> result;
 
-            result = _unitOfWork.Read(todoItemSearchCriteria);
+            SearchCriteria<TodoItem> searchCriteriaModel = new SearchCriteria<TodoItem>(
+                todoItemSearchCriteria.Search, 
+                todoItemSearchCriteria.SortBy, 
+                todoItemSearchCriteria.IsDesc, 
+                mapper.Map<TodoItem>(todoItemSearchCriteria.Entity), 
+                todoItemSearchCriteria.PageIndex, 
+                todoItemSearchCriteria.PageSize);
+
+            result = _unitOfWork.Read(searchCriteriaModel);
 
             IEnumerable<TodoItemDTO> resultDTO = mapper.Map<IEnumerable<TodoItemDTO>>(result);
 

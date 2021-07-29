@@ -19,7 +19,7 @@ namespace TodoListAPI.Controllers
 {
     public class TodoItemsController : ApiController
     {
-        private ITodoItemsService service;
+        private ITodoItemsService<TodoItemDTO> service;
 
         public TodoItemsController(TodoItemsService _service)
         {
@@ -28,7 +28,7 @@ namespace TodoListAPI.Controllers
 
         // GET: api/TodoItems
         [ResponseType(typeof(IEnumerable<TodoItemDTO>))]
-        public IHttpActionResult Get(TodoItemSearchCriteria todoItemSearchCriteria, int? id = null)
+        public IHttpActionResult Get(SearchCriteria<TodoItemDTO> todoItemSearchCriteria, int? id = null)
         {
             if(todoItemSearchCriteria == null) return BadRequest();
 
