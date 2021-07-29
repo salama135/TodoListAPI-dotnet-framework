@@ -55,9 +55,7 @@ namespace TodoListAPI.Repositories
         protected void MarkAsModified(T Item)
         {
             context.Entry(Item).State = EntityState.Modified;
-
         }
-
 
         public bool Delete(int id)
         {
