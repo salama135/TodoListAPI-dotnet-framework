@@ -15,11 +15,11 @@ namespace TodoListAPI.Services
 {
     public class TodoItemsService : ITodoItemsService
     {
-        private UnitOfWork _unitOfWork;
+        private IUnitOfWork<TodoItem> _unitOfWork;
 
         readonly IMapper mapper = AutoMapperConfigure._mapper;
 
-        public TodoItemsService(UnitOfWork unitOfWork)
+        public TodoItemsService(TodoItemUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -28,7 +28,7 @@ namespace TodoListAPI.Services
         {
             IEnumerable<TodoItem> result;
 
-            result = _unitOfWork._todoItemRepository.Read(todoItemSearchCriteria);
+            result = _unitOfWork.Read(todoItemSearchCriteria);
 
             IEnumerable<TodoItemDTO> resultDTO = mapper.Map<IEnumerable<TodoItemDTO>>(result);
 
@@ -39,7 +39,7 @@ namespace TodoListAPI.Services
         {
             TodoItem result;
 
-            result = _unitOfWork._todoItemRepository.GetByID(id);
+            result = ((TodoItemUnitOfWork)_unitOfWork).GetByID(id);
 
             TodoItemDTO resultDTO = mapper.Map<TodoItemDTO>(result);
 
@@ -52,7 +52,7 @@ namespace TodoListAPI.Services
 
             TodoItem todoItem = mapper.Map<TodoItem>(todoItemDTO);
 
-            TodoItem newTodoItem = _unitOfWork._todoItemRepository.Create(todoItem);
+            TodoItem newTodoItem = _unitOfWork.Create(todoItem);
 
             bool successful = (newTodoItem != null);
 
@@ -69,7 +69,7 @@ namespace TodoListAPI.Services
 
             TodoItem todoItem = mapper.Map<TodoItem>(todoItemDTO);
 
-            TodoItem newTodoItem = _unitOfWork._todoItemRepository.Update(todoItem);
+            TodoItem newTodoItem = _unitOfWork.Update(todoItem);
 
             bool successful = (newTodoItem != null);
 
@@ -82,7 +82,7 @@ namespace TodoListAPI.Services
 
         public bool Delete(int id)
         {
-            bool successful = _unitOfWork._todoItemRepository.Delete(id);
+            bool successful = _unitOfWork.Delete(id);
 
             TryToSave(ref successful);
 
@@ -93,7 +93,7 @@ namespace TodoListAPI.Services
         {
             try
             {
-                if (successful) _unitOfWork.Save();
+                if (successful) ((TodoItemUnitOfWork)_unitOfWork).Save();
             }
             catch (DbUpdateConcurrencyException)
             {
