@@ -51,6 +51,7 @@ namespace TodoListAPI
 
             // ??
             container.RegisterType<TodoListAPI.Data.TodoListAPIContext>();
+            //container.RegisterType<TodoListAPI.DAL.UnitOfWork>();
 
             AutoMapperConfigure.Register();
 

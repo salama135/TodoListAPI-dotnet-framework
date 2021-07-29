@@ -191,6 +191,7 @@
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Criteria\SearchCriteria.cs" />
     <Compile Include="Criteria\TodoItemSearchCriteria.cs" />
+    <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Data\TodoListAPIContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

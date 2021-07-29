@@ -9,7 +9,7 @@ using TodoListAPI.Models;
 
 namespace TodoListAPI.Repositories
 {
-    public abstract class CrudRepository<T> : ICrudRepository<T> where T : BaseEntity
+    public abstract class CrudRepository<T> : IDisposable, ICrudRepository<T> where T : BaseEntity
     {
         protected TodoListAPIContext context;
 
@@ -41,8 +41,8 @@ namespace TodoListAPI.Repositories
             bool itemExists = ItemExists(Item.Id);
 
             if (itemExists == false) return null;
-            
-            context.Entry(Item).State = EntityState.Modified;
+
+            MarkAsModified(Item);
 
             return Item;
         }
@@ -51,6 +51,13 @@ namespace TodoListAPI.Repositories
         {
             return context.Set<T>().Count(e => e.Id == id) > 0;
         }
+
+        protected void MarkAsModified(T Item)
+        {
+            context.Entry(Item).State = EntityState.Modified;
+
+        }
+
 
         public bool Delete(int id)
         {
@@ -86,5 +93,25 @@ namespace TodoListAPI.Repositories
         public abstract T GetByID(int id);
 
         public abstract void Save();
+
+        private bool disposed = false;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    context.Dispose();
+                }
+            }
+            this.disposed = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
     }
 }

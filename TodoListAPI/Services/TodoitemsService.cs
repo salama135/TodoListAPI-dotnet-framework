@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using TodoListAPI.AutoMapperConfig;
 using TodoListAPI.Criteria;
+using TodoListAPI.DAL;
 using TodoListAPI.Data;
 using TodoListAPI.Models;
 using TodoListAPI.Repositories;
@@ -14,20 +15,20 @@ namespace TodoListAPI.Services
 {
     public class TodoItemsService : ITodoItemsService
     {
-        private CrudRepository<TodoItem> _todoItemRepository;
+        private UnitOfWork _unitOfWork;
 
         readonly IMapper mapper = AutoMapperConfigure._mapper;
 
-        public TodoItemsService(TodoItemRepository todoItemRepository)
+        public TodoItemsService(UnitOfWork unitOfWork)
         {
-            _todoItemRepository = todoItemRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public IEnumerable<TodoItemDTO> Get(TodoItemSearchCriteria todoItemSearchCriteria)
         {
             IEnumerable<TodoItem> result;
 
-            result = _todoItemRepository.Read(todoItemSearchCriteria);
+            result = _unitOfWork._todoItemRepository.Read(todoItemSearchCriteria);
 
             IEnumerable<TodoItemDTO> resultDTO = mapper.Map<IEnumerable<TodoItemDTO>>(result);
 
@@ -38,7 +39,7 @@ namespace TodoListAPI.Services
         {
             TodoItem result;
 
-            result = _todoItemRepository.GetByID(id);
+            result = _unitOfWork._todoItemRepository.GetByID(id);
 
             TodoItemDTO resultDTO = mapper.Map<TodoItemDTO>(result);
 
@@ -51,7 +52,7 @@ namespace TodoListAPI.Services
 
             TodoItem todoItem = mapper.Map<TodoItem>(todoItemDTO);
 
-            TodoItem newTodoItem = _todoItemRepository.Create(todoItem);
+            TodoItem newTodoItem = _unitOfWork._todoItemRepository.Create(todoItem);
 
             bool successful = (newTodoItem != null);
 
@@ -68,7 +69,7 @@ namespace TodoListAPI.Services
 
             TodoItem todoItem = mapper.Map<TodoItem>(todoItemDTO);
 
-            TodoItem newTodoItem = _todoItemRepository.Update(todoItem);
+            TodoItem newTodoItem = _unitOfWork._todoItemRepository.Update(todoItem);
 
             bool successful = (newTodoItem != null);
 
@@ -81,7 +82,7 @@ namespace TodoListAPI.Services
 
         public bool Delete(int id)
         {
-            bool successful = _todoItemRepository.Delete(id);
+            bool successful = _unitOfWork._todoItemRepository.Delete(id);
 
             TryToSave(ref successful);
 
@@ -92,7 +93,7 @@ namespace TodoListAPI.Services
         {
             try
             {
-                if (successful) _todoItemRepository.Save();
+                if (successful) _unitOfWork.Save();
             }
             catch (DbUpdateConcurrencyException)
             {
