@@ -14,8 +14,4 @@ namespace TodoListAPI.Models
         public bool isDone { get; set; } = false;
         public string Description { get; set; }
     }
-    public class BaseEntity
-    {
-        public int Id { get; set; }
-    }
 }

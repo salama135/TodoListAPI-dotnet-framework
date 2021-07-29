@@ -11,9 +11,8 @@ namespace TodoListAPI.Services
     public interface ITodoItemsService
     {
         IEnumerable<TodoItemDTO> Get(TodoItemSearchCriteria todoItemSearchCriteria);
-        TodoItemDTO Get(int id);
-        bool Post(TodoItem todoItem);
-        bool Put(int id, TodoItem todoItem);
+        TodoItemDTO Post(TodoItemDTO todoItem);
+        TodoItemDTO Put(int id, TodoItemDTO todoItem);
         bool Delete(int id);
     }
 }

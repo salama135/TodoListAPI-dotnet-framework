@@ -14,62 +14,69 @@ namespace TodoListAPI.Services
 {
     public class TodoItemsService : ITodoItemsService
     {
-        private ITodoItemRepository _todoItemRepository;
+        private CrudRepository<TodoItem> _todoItemRepository;
 
         readonly IMapper mapper = AutoMapperConfigure._mapper;
 
-        public TodoItemsService(ITodoItemRepository employeeRepository)
+        public TodoItemsService(TodoItemRepository todoItemRepository)
         {
-            _todoItemRepository = employeeRepository;
+            _todoItemRepository = todoItemRepository;
         }
 
         public IEnumerable<TodoItemDTO> Get(TodoItemSearchCriteria todoItemSearchCriteria)
         {
-
-
-
             IEnumerable<TodoItem> result;
 
-            if (todoItemSearchCriteria.search != null) result = _todoItemRepository.GetFiltered(todoItemSearchCriteria.search);
-            else
-            if (todoItemSearchCriteria.sort != null) result = _todoItemRepository.GetSorted(todoItemSearchCriteria.sort, todoItemSearchCriteria.isDescending);
-            else
-            {
-                result = _todoItemRepository.GetAll();
-            }
+            result = _todoItemRepository.Read(todoItemSearchCriteria);
 
-            IEnumerable<TodoItemDTO> resultDTO = this.mapper.Map<IEnumerable<TodoItemDTO>>(result);
+            IEnumerable<TodoItemDTO> resultDTO = mapper.Map<IEnumerable<TodoItemDTO>>(result);
 
             return resultDTO;
         }
 
-        public TodoItemDTO Get(int id)
+        public TodoItemDTO GetByID(int id)
         {
-            TodoItem result = _todoItemRepository.GetById(id);
+            TodoItem result;
 
-            TodoItemDTO resultDTO = this.mapper.Map<TodoItemDTO>(result);
+            result = _todoItemRepository.GetByID(id);
+
+            TodoItemDTO resultDTO = mapper.Map<TodoItemDTO>(result);
 
             return resultDTO;
         }
 
-        public bool Post(TodoItem todoItem)
+        public TodoItemDTO Post(TodoItemDTO todoItemDTO)
         {
-            if (todoItem == null) return false;
+            if (todoItemDTO == null) return null;
 
-            bool successful = _todoItemRepository.Insert(todoItem);
+            TodoItem todoItem = mapper.Map<TodoItem>(todoItemDTO);
+
+            TodoItem newTodoItem = _todoItemRepository.Create(todoItem);
+
+            bool successful = (newTodoItem != null);
 
             TryToSave(ref successful);
 
-            return successful;
+            if (successful == false) return null;
+
+            return todoItemDTO;
         }
 
-        public bool Put(int id, TodoItem todoItem)
+        public TodoItemDTO Put(int id, TodoItemDTO todoItemDTO)
         {
-            bool successful = _todoItemRepository.Update(id, todoItem);
+            if (todoItemDTO == null) return null;
+
+            TodoItem todoItem = mapper.Map<TodoItem>(todoItemDTO);
+
+            TodoItem newTodoItem = _todoItemRepository.Update(todoItem);
+
+            bool successful = (newTodoItem != null);
 
             TryToSave(ref successful);
 
-            return successful;
+            if (successful == false) return null;
+
+            return todoItemDTO;
         }
 
         public bool Delete(int id)
@@ -92,6 +99,5 @@ namespace TodoListAPI.Services
                 successful = false;
             }
         }
-
     }
 }

@@ -2,22 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using TodoListAPI.Models;
 
 namespace TodoListAPI.Criteria
 {
-    public class TodoItemSearchCriteria
+    public class TodoItemSearchCriteria : SearchCriteria<TodoItem> 
     {
-        public string search { get; set; }
-
-        public string sort { get; set; }
-
-        public bool isDescending { get; set; }
-
-        public TodoItemSearchCriteria(string _search, string _sort, bool _isDescending)
+        public TodoItemSearchCriteria(string _search, string _sort, bool _isDescending, TodoItem todoItem, int pageIndex, int pageSize)
         {
-            search = _search;
-            sort = _sort;
-            isDescending = _isDescending;
+            Search = _search;
+            SortBy = _sort;
+            IsDesc = _isDescending;
+            Entity = todoItem;
+            PageIndex = pageIndex;
+            PageSize = pageSize;
         }
     }
 }
