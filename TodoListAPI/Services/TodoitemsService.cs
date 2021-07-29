@@ -93,7 +93,7 @@ namespace TodoListAPI.Services
         {
             try
             {
-                if (successful) ((TodoItemUnitOfWork)_unitOfWork).Save();
+                if (successful) _unitOfWork.Save();
             }
             catch (DbUpdateConcurrencyException)
             {

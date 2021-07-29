@@ -48,6 +48,4 @@ namespace TodoListAPI.DAL
             return _todoItemRepository.Delete(id);
         }
     }
-
-
 }

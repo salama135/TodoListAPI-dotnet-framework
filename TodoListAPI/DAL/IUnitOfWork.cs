@@ -17,5 +17,7 @@ namespace TodoListAPI.DAL
         T Update(T Item);
 
         bool Delete(int id);
+
+        void Save();
     }
 }

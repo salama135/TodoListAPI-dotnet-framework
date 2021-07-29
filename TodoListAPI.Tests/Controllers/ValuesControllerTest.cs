@@ -7,6 +7,7 @@ using System.Text;
 using System.Web.Http;
 using TodoListAPI;
 using TodoListAPI.Controllers;
+using System.Data.Entity;
 
 namespace TodoListAPI.Tests.Controllers
 {
