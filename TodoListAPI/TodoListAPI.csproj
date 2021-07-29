@@ -190,7 +190,6 @@
     <Compile Include="Controllers\TodoItemsController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Criteria\SearchCriteria.cs" />
-    <Compile Include="Criteria\TodoItemSearchCriteria.cs" />
     <Compile Include="DAL\IUnitOfWork.cs" />
     <Compile Include="DAL\TodoItemUnitOfWork.cs" />
     <Compile Include="Data\TodoListAPIContext.cs" />

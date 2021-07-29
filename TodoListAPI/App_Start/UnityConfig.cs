@@ -47,7 +47,7 @@ namespace TodoListAPI
             // TODO: Register your type's mappings here.
             
             container.RegisterType<ICrudRepository<TodoItem>, TodoItemRepository>();
-            container.RegisterType<ITodoItemsService, TodoItemsService>();
+            container.RegisterType<ITodoItemsService<TodoItemDTO>, TodoItemsService>();
 
             // ??
             container.RegisterType<TodoListAPI.Data.TodoListAPIContext>();

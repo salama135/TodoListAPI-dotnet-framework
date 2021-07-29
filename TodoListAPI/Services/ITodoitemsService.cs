@@ -8,11 +8,11 @@ using TodoListAPI.Models;
 
 namespace TodoListAPI.Services
 {
-    public interface ITodoItemsService
+    public interface ITodoItemsService<T> where T : BaseEntity
     {
-        IEnumerable<TodoItemDTO> Get(TodoItemSearchCriteria todoItemSearchCriteria);
-        TodoItemDTO Post(TodoItemDTO todoItem);
-        TodoItemDTO Put(int id, TodoItemDTO todoItem);
+        IEnumerable<T> Get(SearchCriteria<T> todoItemSearchCriteria);
+        T Post(T todoItem);
+        T Put(int id, T todoItem);
         bool Delete(int id);
     }
 }
