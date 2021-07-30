@@ -19,7 +19,7 @@ namespace TodoListAPI.Services
 
         readonly IMapper mapper = AutoMapperConfigure._mapper;
 
-        public TodoItemsService(TodoItemUnitOfWork unitOfWork)
+        public TodoItemsService(IUnitOfWork<TodoItem> unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -47,7 +47,7 @@ namespace TodoListAPI.Services
         {
             TodoItem result;
 
-            result = ((TodoItemUnitOfWork)_unitOfWork).GetByID(id);
+            result = _unitOfWork.GetByID(id);
 
             TodoItemDTO resultDTO = mapper.Map<TodoItemDTO>(result);
 

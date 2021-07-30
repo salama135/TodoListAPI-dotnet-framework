@@ -13,6 +13,11 @@ namespace TodoListAPI.DAL
     {
         public CrudRepository<TodoItem> _todoItemRepository { get; }
 
+        public TodoItemUnitOfWork()
+        {
+
+        }
+
         public TodoItemUnitOfWork(TodoItemRepository todoItemRepository)
         {
             _todoItemRepository = todoItemRepository;

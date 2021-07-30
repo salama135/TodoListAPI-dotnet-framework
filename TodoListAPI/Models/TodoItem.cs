@@ -11,7 +11,20 @@ namespace TodoListAPI.Models
         [Required]
         public string Title { get; set; }
         public DateTime CreationData { get; set; }
-        public bool isDone { get; set; } = false;
+        public bool IsDone { get; set; } = false;
         public string Description { get; set; }
+
+        public TodoItem()
+        {
+
+        }
+
+        public TodoItem(string title, string description, DateTime creationDate, bool isDone)
+        {
+            Title = title;
+            Description = description;
+            CreationData = creationDate;
+            IsDone = isDone;
+        }
     }
 }

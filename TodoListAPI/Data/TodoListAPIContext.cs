@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Web;
+using TodoListAPI.Models;
 
 namespace TodoListAPI.Data
 {
@@ -19,6 +20,6 @@ namespace TodoListAPI.Data
         {
         }
 
-        public System.Data.Entity.DbSet<TodoListAPI.Models.TodoItem> TodoItems { get; set; }
+        public IDbSet<TodoItem> TodoItems { get; set; }
     }
 }

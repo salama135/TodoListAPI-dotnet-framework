@@ -12,6 +12,10 @@ using TodoListAPI.Data;
 using TodoListAPI.Services;
 using TodoListAPI.Models;
 using System.Data.Entity.Migrations;
+using Moq;
+using TodoListAPI.Repositories;
+using TodoListAPI.DAL;
+using TodoListAPI.AutoMapperConfig;
 
 namespace TodoListAPI.Tests.Controllers
 {
@@ -21,6 +25,23 @@ namespace TodoListAPI.Tests.Controllers
         [TestMethod]
         public void Get()
         {
+            AutoMapperConfigure.Register();
+
+            Mock<IUnitOfWork<TodoItem>> mock = new Mock<IUnitOfWork<TodoItem>>();
+
+            TodoItem item = new TodoItem("task 1", "finish unit test", new DateTime(1, 1, 1, 1, 1, 1), false);
+
+            mock.Setup(r => r.Create(It.IsAny<TodoItem>())).Returns(item);
+
+            TodoItemsService service = new TodoItemsService(mock.Object);
+
+            TodoItemDTO itemDTO = AutoMapperConfigure._mapper.Map<TodoItemDTO>(item);
+
+            var dto = service.Post(itemDTO);
+
+            Assert.IsNotNull(dto);
+            Assert.AreEqual(itemDTO, dto);
+
             // Arrange
             ValuesController controller = new ValuesController();
 

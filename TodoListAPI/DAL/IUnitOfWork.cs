@@ -18,6 +18,8 @@ namespace TodoListAPI.DAL
 
         bool Delete(int id);
 
+        T GetByID(int id);
+
         void Save();
     }
 }
