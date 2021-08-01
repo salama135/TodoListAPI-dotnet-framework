@@ -5,17 +5,18 @@ using System.Linq;
 using System.Web;
 using TodoListAPI.Criteria;
 using TodoListAPI.Data;
+using TodoListAPI.Extension;
 using TodoListAPI.Models;
 
 namespace TodoListAPI.Repositories
 {
-    public abstract class CrudRepository<T> : IDisposable, ICrudRepository<T> where T : BaseEntity
+    public abstract class CrudRepository<T> : ICrudRepository<T> where T : BaseEntity
     {
         protected TodoListAPIContext context;
 
         public CrudRepository(TodoListAPIContext Context)
         {
-            this.context = Context;
+            context = Context;
         }
 
         public T Create(T item)
@@ -30,8 +31,8 @@ namespace TodoListAPI.Repositories
         public IList<T> Read(SearchCriteria<T> criteria)
         {
             var query = Search(criteria);
-            query = Paginate(criteria, query);
-            var data = Sort(criteria, query);
+            query = Sort(criteria, query);
+            var data = Paginate(criteria, query);
 
             return data.ToList();
         }
@@ -76,40 +77,18 @@ namespace TodoListAPI.Repositories
                 query = query.Skip(criteria.PageSize * criteria.PageIndex)
                              .Take(criteria.PageSize);
             }
+
             return query;
         }
 
-        protected virtual IOrderedQueryable<T> Sort(SearchCriteria<T> critera, IQueryable<T> query)
+        protected virtual IQueryable<T> Sort(SearchCriteria<T> critera, IQueryable<T> query)
         {
             // because T is BaseEntity, so we guarntee that we have a property called "Id";
             critera.SortBy = critera.SortBy ?? "Id";
-            return (critera.IsDesc) ? query.OrderByDescending(t => critera.SortBy) : query.OrderBy(t => critera.SortBy);
+
+            return query.OrderByDynamically(critera.SortBy, critera.IsDesc);
         }
 
         public abstract IQueryable<T> Search(SearchCriteria<T> criteria);
-
-        public abstract T GetByID(int id);
-
-        public abstract void Save();
-
-        private bool disposed = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
     }
 }

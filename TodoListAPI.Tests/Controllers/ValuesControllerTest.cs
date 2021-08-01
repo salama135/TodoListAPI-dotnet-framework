@@ -27,13 +27,13 @@ namespace TodoListAPI.Tests.Controllers
         {
             AutoMapperConfigure.Register();
 
-            Mock<IUnitOfWork<TodoItem>> mock = new Mock<IUnitOfWork<TodoItem>>();
+            Mock<ICrudRepository<TodoItem>> mock = new Mock<ICrudRepository<TodoItem>>();
 
             TodoItem item = new TodoItem("task 1", "finish unit test", new DateTime(1, 1, 1, 1, 1, 1), false);
 
             mock.Setup(r => r.Create(It.IsAny<TodoItem>())).Returns(item);
 
-            TodoItemsService service = new TodoItemsService(mock.Object);
+            TodoItemsService service = new TodoItemsService(new TodoItemUnitOfWork(null, mock.Object));
 
             TodoItemDTO itemDTO = AutoMapperConfigure._mapper.Map<TodoItemDTO>(item);
 

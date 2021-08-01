@@ -191,8 +191,9 @@
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Criteria\SearchCriteria.cs" />
     <Compile Include="DAL\IUnitOfWork.cs" />
-    <Compile Include="DAL\TodoItemUnitOfWork.cs" />
+    <Compile Include="DAL\UnitOfWork.cs" />
     <Compile Include="Data\TodoListAPIContext.cs" />
+    <Compile Include="Extension\IQueryableExtension.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -208,7 +209,7 @@
     <Compile Include="Repositories\ICrudRepository.cs" />
     <Compile Include="Repositories\CrudRepository.cs" />
     <Compile Include="Repositories\TodoItemRepository.cs" />
-    <Compile Include="Services\ITodoItemsService.cs" />
+    <Compile Include="Services\IService.cs" />
     <Compile Include="Services\TodoItemsService.cs" />
   </ItemGroup>
   <ItemGroup>

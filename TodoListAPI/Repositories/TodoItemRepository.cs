@@ -9,7 +9,12 @@ using TodoListAPI.Models;
 
 namespace TodoListAPI.Repositories
 {
-    public class TodoItemRepository : CrudRepository<TodoItem>
+    public interface ITodoItemRepository : ICrudRepository<TodoItem>
+    {
+        TodoItem GetByID(int id);
+    }
+
+    public class TodoItemRepository : CrudRepository<TodoItem>, ITodoItemRepository
     {
         public TodoItemRepository(TodoListAPIContext Context) : base(Context)
         {
@@ -19,18 +24,17 @@ namespace TodoListAPI.Repositories
         {
             var query = context.TodoItems.Where(t => string.IsNullOrEmpty(criteria.Search) ||
                                                         t.Title.Contains(criteria.Search));
+            // creationDate < 1-1-2020
+            // Contains("title")
+            // id = 28
+
 
             return query;
         }
 
-        public override TodoItem GetByID(int id)
+        public TodoItem GetByID(int id)
         {
             return context.TodoItems.Find(id);
-        }
-
-        public override void Save()
-        {
-            context.SaveChanges();
         }
     }
 }

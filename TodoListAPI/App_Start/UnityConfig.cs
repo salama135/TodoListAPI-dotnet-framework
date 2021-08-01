@@ -1,10 +1,14 @@
 using AutoMapper;
 using System;
 using TodoListAPI.AutoMapperConfig;
+using TodoListAPI.DAL;
+using TodoListAPI.Data;
 using TodoListAPI.Models;
 using TodoListAPI.Repositories;
 using TodoListAPI.Services;
 using Unity;
+using Unity.Injection;
+using Unity.Lifetime;
 
 namespace TodoListAPI
 {
@@ -45,16 +49,18 @@ namespace TodoListAPI
             // container.LoadConfiguration();
 
             // TODO: Register your type's mappings here.
-            
-            container.RegisterType<ICrudRepository<TodoItem>, TodoItemRepository>();
-            container.RegisterType<ITodoItemsService<TodoItemDTO>, TodoItemsService>();
+            //ContainerControlledTransientManager or ContainerControlledLifetimeManager
+            container.RegisterType<TodoListAPIContext>(new ContainerControlledLifetimeManager());
 
-            // ??
-            container.RegisterType<TodoListAPI.Data.TodoListAPIContext>();
-            //container.RegisterType<TodoListAPI.DAL.UnitOfWork>();
+            //var context = container.Resolve<TodoListAPIContext>();
+            //container.RegisterType<ICrudRepository<TodoItem>, TodoItemRepository>(new InjectionConstructor(new object [] { context }));
+
+            container.RegisterType<ITodoItemRepository, TodoItemRepository>();
+            container.RegisterType<IUnitOfWork<TodoItem>, UnitOfWork>();
+            container.RegisterType<IService<TodoItemDTO>, TodoItemsService>();
+
 
             AutoMapperConfigure.Register();
-
         }
     }
 }

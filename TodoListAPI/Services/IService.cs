@@ -8,7 +8,7 @@ using TodoListAPI.Models;
 
 namespace TodoListAPI.Services
 {
-    public interface ITodoItemsService<T> where T : BaseEntity
+    public interface IService<T> where T : BaseEntity
     {
         IEnumerable<T> Get(SearchCriteria<T> todoItemSearchCriteria);
         T Post(T todoItem);

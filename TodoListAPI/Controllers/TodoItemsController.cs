@@ -19,9 +19,9 @@ namespace TodoListAPI.Controllers
 {
     public class TodoItemsController : ApiController
     {
-        private ITodoItemsService<TodoItemDTO> service;
+        private IService<TodoItemDTO> service;
 
-        public TodoItemsController(TodoItemsService _service)
+        public TodoItemsController(IService<TodoItemDTO> _service)
         {
             service = _service;
         }

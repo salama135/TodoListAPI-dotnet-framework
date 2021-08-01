@@ -1,24 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TodoListAPI.Criteria;
+using TodoListAPI.Data;
 using TodoListAPI.Models;
+using TodoListAPI.Repositories;
 
 namespace TodoListAPI.DAL
 {
     public interface IUnitOfWork<T> where T : BaseEntity
     {
-        IEnumerable<T> Read(SearchCriteria<T> searchCriteria);
-
-        T Create(T item);
-
-        T Update(T Item);
-
-        bool Delete(int id);
-
-        T GetByID(int id);
+        ITodoItemRepository TodoItemRepository { get; set; }
 
         void Save();
     }
