@@ -13,18 +13,22 @@ namespace TodoListAPI.Models
         public DateTime CreationData { get; set; }
         public bool IsDone { get; set; } = false;
         public string Description { get; set; }
+        
+        // Foreign Key
+        public int UserId { get; set; }
 
         public TodoItem()
         {
 
         }
 
-        public TodoItem(string title, string description, DateTime creationDate, bool isDone)
+        public TodoItem(string title, string description, DateTime creationDate, bool isDone, int userId)
         {
             Title = title;
             Description = description;
             CreationData = creationDate;
             IsDone = isDone;
+            UserId = userId;
         }
     }
 }
