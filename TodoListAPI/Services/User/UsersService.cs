@@ -1,0 +1,112 @@
+﻿using AutoMapper;
+using System;
+using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
+using System.Linq;
+using System.Web;
+using TodoListAPI.AutoMapperConfig;
+using TodoListAPI.Criteria;
+using TodoListAPI.DAL;
+using TodoListAPI.Models;
+
+namespace TodoListAPI.Services
+{
+    public class UsersService : IService<UserDTO>
+    {
+        private IUnitOfWork _unitOfWork;
+
+        readonly IMapper mapper = AutoMapperConfigure._mapper;
+
+        public UsersService(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
+
+        public IEnumerable<UserDTO> Get(SearchCriteria<UserDTO> searchCriteria)
+        {
+            IEnumerable<User> result;
+
+            SearchCriteria<User> newSearchCriteria =
+                new SearchCriteria<User>(
+                    searchCriteria.Search,
+                    searchCriteria.SortBy,
+                    searchCriteria.IsDesc,
+                    mapper.Map<User>(searchCriteria.Entity),
+                    searchCriteria.UserId,
+                    searchCriteria.PageIndex,
+                    searchCriteria.PageSize);
+
+            result = _unitOfWork.UserRepository.Read(newSearchCriteria);
+
+            IEnumerable<UserDTO> resultDTO = mapper.Map<IEnumerable<UserDTO>>(result);
+
+            return resultDTO;
+        }
+
+        public UserDTO GetByID(int id)
+        {
+            User result;
+
+            result = _unitOfWork.UserRepository.GetByID(id);
+
+            UserDTO resultDTO = mapper.Map<UserDTO>(result);
+
+            return resultDTO;
+        }
+
+        public UserDTO Post(UserDTO dto)
+        {
+            if (dto == null) return null;
+
+            User model = mapper.Map<User>(dto);
+
+            User createdModel = _unitOfWork.UserRepository.Create(model);
+
+            bool successful = (createdModel != null);
+
+            TryToSave(ref successful);
+
+            if (successful == false) return null;
+
+            return dto;
+        }
+
+        public UserDTO Put(int id, UserDTO dto)
+        {
+            if (dto == null) return null;
+
+            User model = mapper.Map<User>(dto);
+
+            User editedModel = _unitOfWork.UserRepository.Update(model);
+
+            bool successful = (editedModel != null);
+
+            TryToSave(ref successful);
+
+            if (successful == false) return null;
+
+            return dto;
+        }
+
+        public bool Delete(int id)
+        {
+            bool successful = _unitOfWork.UserRepository.Delete(id);
+
+            TryToSave(ref successful);
+
+            return successful;
+        }
+
+        public void TryToSave(ref bool successful)
+        {
+            try
+            {
+                if (successful) _unitOfWork.Save();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                successful = false;
+            }
+        }
+    }
+}

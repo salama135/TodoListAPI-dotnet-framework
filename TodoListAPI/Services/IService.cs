@@ -10,9 +10,9 @@ namespace TodoListAPI.Services
 {
     public interface IService<T> where T : BaseEntity
     {
-        IEnumerable<T> Get(SearchCriteria<T> todoItemSearchCriteria);
-        T Post(T todoItem);
-        T Put(int id, T todoItem);
+        IEnumerable<T> Get(SearchCriteria<T> searchCriteria);
+        T Post(T dto);
+        T Put(int id, T dto);
         bool Delete(int id);
     }
 }

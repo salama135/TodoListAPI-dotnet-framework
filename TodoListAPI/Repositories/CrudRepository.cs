@@ -39,7 +39,7 @@ namespace TodoListAPI.Repositories
 
         public T Update(T Item)
         {
-            bool itemExists = ItemExists(Item.Id);
+            bool itemExists = EnteryExists(Item.Id);
 
             if (itemExists == false) return null;
 
@@ -48,7 +48,7 @@ namespace TodoListAPI.Repositories
             return Item;
         }
 
-        private bool ItemExists(int id)
+        public bool EnteryExists(int id)
         {
             return context.Set<T>().Count(e => e.Id == id) > 0;
         }

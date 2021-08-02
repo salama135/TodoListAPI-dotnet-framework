@@ -15,17 +15,20 @@ namespace TodoListAPI.Models
         public bool IsDone { get; set; } = false;
         public string Description { get; set; }
 
+        public int UserId { get; set; }
+
         public TodoItemDTO()
         {
 
         }
 
-        public TodoItemDTO(string title, string description, DateTime creationDate, bool isDone)
+        public TodoItemDTO(string title, string description, DateTime creationDate, bool isDone, int userId)
         {
             Title = title;
             Description = description;
             CreationData = creationDate;
             IsDone = isDone;
+            UserId = userId;
         }
     }
 }

@@ -11,9 +11,10 @@ using TodoListAPI.Repositories;
 
 namespace TodoListAPI.DAL
 {
-    public interface IUnitOfWork<T> where T : BaseEntity
+    public interface IUnitOfWork
     {
         ITodoItemRepository TodoItemRepository { get; set; }
+        IUserRepository UserRepository { get; set; }
 
         void Save();
     }

@@ -17,6 +17,7 @@ namespace TodoListAPI.AutoMapperConfig
                 config =>
                 {
                     config.AddProfile<TodoItemProfile>();
+                    config.AddProfile<UserProfile>();
                 }
             );
 

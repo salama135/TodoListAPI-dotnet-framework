@@ -12,16 +12,18 @@ namespace TodoListAPI.Criteria
         public string SortBy { get; set; }
         public bool IsDesc { get; set; }
         public T Entity { get; set; }
+        public int UserId { get; set; }
 
         public int PageIndex { get; set; }
         public int PageSize { get; set; }
 
-        public SearchCriteria(string _search, string _sort, bool _isDescending, T todoItem, int pageIndex, int pageSize)
+        public SearchCriteria(string _search, string _sort, bool _isDescending, T todoItem, int userId, int pageIndex, int pageSize)
         {
             Search = _search;
             SortBy = _sort;
             IsDesc = _isDescending;
             Entity = todoItem;
+            UserId = userId;
             PageIndex = pageIndex;
             PageSize = pageSize;
         }
