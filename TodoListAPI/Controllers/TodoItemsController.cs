@@ -19,24 +19,34 @@ namespace TodoListAPI.Controllers
 {
     public class TodoItemsController : ApiController
     {
-        private ITodoItemsService service;
+        private IService<TodoItemDTO> service;
 
-        public TodoItemsController(ITodoItemsService _service)
+        public TodoItemsController(IService<TodoItemDTO> _service)
         {
             service = _service;
         }
 
         // GET: api/TodoItems
-        public IEnumerable<TodoItemDTO> Get(TodoItemSearchCriteria todoItemSearchCriteria)
+        [ResponseType(typeof(IEnumerable<TodoItemDTO>))]
+        public IHttpActionResult Get(SearchCriteria<TodoItemDTO> todoItemSearchCriteria, int? id = null)
         {
-            return service.Get(todoItemSearchCriteria);
+            if(todoItemSearchCriteria == null) return BadRequest();
+
+            IEnumerable<TodoItemDTO> todoItemDTOs = service.Get(todoItemSearchCriteria);
+
+            if (todoItemDTOs == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(todoItemDTOs);
         }
 
         // GET: api/TodoItems/5
         [ResponseType(typeof(TodoItemDTO))]
         public IHttpActionResult Get(int id)
         {
-            TodoItemDTO todoItem = service.Get(id);
+            TodoItemDTO todoItem = ((TodoItemsService)service).GetByID(id);
 
             if (todoItem == null) return BadRequest();
 
@@ -44,17 +54,17 @@ namespace TodoListAPI.Controllers
         }
 
         // POST: api/TodoItems
-        [ResponseType(typeof(TodoItem))]
-        public IHttpActionResult Post(TodoItem todoItem)
+        [ResponseType(typeof(TodoItemDTO))]
+        public IHttpActionResult Post(TodoItemDTO todoItem)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            bool successful = service.Post(todoItem);
+            TodoItemDTO newtodoItem = service.Post(todoItem);
 
-            if (successful == false)
+            if (newtodoItem == null)
             {
                 return NotFound();
             }
@@ -63,8 +73,8 @@ namespace TodoListAPI.Controllers
         }
 
         // PUT: api/TodoItems/5
-        [ResponseType(typeof(TodoItem))]
-        public IHttpActionResult Put(int id, TodoItem todoItem)
+        [ResponseType(typeof(TodoItemDTO))]
+        public IHttpActionResult Put(int id, TodoItemDTO todoItem)
         {
             if (!ModelState.IsValid)
             {
@@ -76,9 +86,9 @@ namespace TodoListAPI.Controllers
                 return BadRequest();
             }
 
-            bool successful = service.Put(id, todoItem);
+            TodoItemDTO newtodoItem = service.Put(id, todoItem);
 
-            if (successful == false)
+            if (newtodoItem == null)
             {
                 return NotFound();
             }

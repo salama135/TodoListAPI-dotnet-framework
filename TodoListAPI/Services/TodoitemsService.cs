@@ -6,75 +6,92 @@ using System.Linq;
 using System.Web;
 using TodoListAPI.AutoMapperConfig;
 using TodoListAPI.Criteria;
+using TodoListAPI.DAL;
 using TodoListAPI.Data;
 using TodoListAPI.Models;
 using TodoListAPI.Repositories;
 
 namespace TodoListAPI.Services
 {
-    public class TodoItemsService : ITodoItemsService
+    public class TodoItemsService : IService<TodoItemDTO>
     {
-        private ITodoItemRepository _todoItemRepository;
+        private IUnitOfWork<TodoItem> _unitOfWork;
 
         readonly IMapper mapper = AutoMapperConfigure._mapper;
 
-        public TodoItemsService(ITodoItemRepository employeeRepository)
+        public TodoItemsService(IUnitOfWork<TodoItem> unitOfWork)
         {
-            _todoItemRepository = employeeRepository;
+            _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<TodoItemDTO> Get(TodoItemSearchCriteria todoItemSearchCriteria)
+        public IEnumerable<TodoItemDTO> Get(SearchCriteria<TodoItemDTO> searchCriteria)
         {
-
-
-
             IEnumerable<TodoItem> result;
 
-            if (todoItemSearchCriteria.search != null) result = _todoItemRepository.GetFiltered(todoItemSearchCriteria.search);
-            else
-            if (todoItemSearchCriteria.sort != null) result = _todoItemRepository.GetSorted(todoItemSearchCriteria.sort, todoItemSearchCriteria.isDescending);
-            else
-            {
-                result = _todoItemRepository.GetAll();
-            }
+            SearchCriteria<TodoItem> newSearchCriteria =
+                new SearchCriteria<TodoItem>(
+                    searchCriteria.Search,
+                    searchCriteria.SortBy,
+                    searchCriteria.IsDesc,
+                    mapper.Map<TodoItem>(searchCriteria.Entity),
+                    searchCriteria.PageIndex,
+                    searchCriteria.PageSize);
 
-            IEnumerable<TodoItemDTO> resultDTO = this.mapper.Map<IEnumerable<TodoItemDTO>>(result);
-
-            return resultDTO;
-        }
-
-        public TodoItemDTO Get(int id)
-        {
-            TodoItem result = _todoItemRepository.GetById(id);
-
-            TodoItemDTO resultDTO = this.mapper.Map<TodoItemDTO>(result);
+            result = _unitOfWork.TodoItemRepository.Read(newSearchCriteria);
+            
+            IEnumerable<TodoItemDTO> resultDTO = mapper.Map<IEnumerable<TodoItemDTO>>(result);
 
             return resultDTO;
         }
 
-        public bool Post(TodoItem todoItem)
+        public TodoItemDTO GetByID(int id)
         {
-            if (todoItem == null) return false;
+            TodoItem result;
 
-            bool successful = _todoItemRepository.Insert(todoItem);
+            result = _unitOfWork.TodoItemRepository.GetByID(id);
 
-            TryToSave(ref successful);
+            TodoItemDTO resultDTO = mapper.Map<TodoItemDTO>(result);
 
-            return successful;
+            return resultDTO;
         }
 
-        public bool Put(int id, TodoItem todoItem)
+        public TodoItemDTO Post(TodoItemDTO todoItemDTO)
         {
-            bool successful = _todoItemRepository.Update(id, todoItem);
+            if (todoItemDTO == null) return null;
+
+            TodoItem todoItem = mapper.Map<TodoItem>(todoItemDTO);
+
+            TodoItem newTodoItem = _unitOfWork.TodoItemRepository.Create(todoItem);
+
+            bool successful = (newTodoItem != null);
 
             TryToSave(ref successful);
 
-            return successful;
+            if (successful == false) return null;
+
+            return todoItemDTO;
+        }
+
+        public TodoItemDTO Put(int id, TodoItemDTO todoItemDTO)
+        {
+            if (todoItemDTO == null) return null;
+
+            TodoItem todoItem = mapper.Map<TodoItem>(todoItemDTO);
+
+            TodoItem newTodoItem = _unitOfWork.TodoItemRepository.Update(todoItem);
+
+            bool successful = (newTodoItem != null);
+
+            TryToSave(ref successful);
+
+            if (successful == false) return null;
+
+            return todoItemDTO;
         }
 
         public bool Delete(int id)
         {
-            bool successful = _todoItemRepository.Delete(id);
+            bool successful = _unitOfWork.TodoItemRepository.Delete(id);
 
             TryToSave(ref successful);
 
@@ -85,13 +102,12 @@ namespace TodoListAPI.Services
         {
             try
             {
-                if (successful) _todoItemRepository.Save();
+                if (successful) _unitOfWork.Save();
             }
             catch (DbUpdateConcurrencyException)
             {
                 successful = false;
             }
         }
-
     }
 }
