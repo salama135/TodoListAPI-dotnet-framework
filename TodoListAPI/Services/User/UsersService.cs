@@ -26,17 +26,8 @@ namespace TodoListAPI.Services
         {
             IEnumerable<User> result;
 
-            SearchCriteria<User> newSearchCriteria =
-                new SearchCriteria<User>(
-                    searchCriteria.Search,
-                    searchCriteria.SortBy,
-                    searchCriteria.IsDesc,
-                    mapper.Map<User>(searchCriteria.Entity),
-                    searchCriteria.UserId,
-                    searchCriteria.PageIndex,
-                    searchCriteria.PageSize);
 
-            result = _unitOfWork.UserRepository.Read(newSearchCriteria);
+            result = _unitOfWork.UserRepository.Get(searchCriteria);
 
             IEnumerable<UserDTO> resultDTO = mapper.Map<IEnumerable<UserDTO>>(result);
 

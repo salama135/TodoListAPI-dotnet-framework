@@ -20,7 +20,7 @@ namespace TodoListAPI.Repositories
         {
         }
 
-        public override IQueryable<TodoItem> Search(SearchCriteria<TodoItem> criteria)
+        public override IQueryable<TodoItem> Search(BaseSearchCriteria criteria)
         {
             var query = context.TodoItems
                 .Where(t => string.IsNullOrEmpty(criteria.Search) || t.Title.Contains(criteria.Search))
