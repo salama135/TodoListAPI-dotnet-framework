@@ -12,7 +12,7 @@ namespace TodoListAPI.Repositories
     {
         T Create(T item);
         
-        IList<T> Read(SearchCriteria<T> criteria);
+        IList<T> Get(BaseSearchCriteria criteria);
 
         T Update(T Item);
 

@@ -28,7 +28,7 @@ namespace TodoListAPI.Repositories
             return createdItem;
         }
         
-        public IList<T> Read(SearchCriteria<T> criteria)
+        public IList<T> Get(BaseSearchCriteria criteria)
         {
             var query = Search(criteria);
             query = Sort(criteria, query);
@@ -69,7 +69,7 @@ namespace TodoListAPI.Repositories
             return true;
         }
 
-        private IQueryable<T> Paginate(SearchCriteria<T> criteria, IQueryable<T> query)
+        private IQueryable<T> Paginate(BaseSearchCriteria criteria, IQueryable<T> query)
         {
             // check if pagination is applied.
             if (criteria.PageIndex > 0 && criteria.PageSize > 0)
@@ -81,14 +81,14 @@ namespace TodoListAPI.Repositories
             return query;
         }
 
-        protected virtual IQueryable<T> Sort(SearchCriteria<T> critera, IQueryable<T> query)
+        protected virtual IQueryable<T> Sort(BaseSearchCriteria criteria, IQueryable<T> query)
         {
             // because T is BaseEntity, so we guarntee that we have a property called "Id";
-            critera.SortBy = critera.SortBy ?? "Id";
+            criteria.SortBy = criteria.SortBy ?? "Id";
 
-            return query.OrderByDynamically(critera.SortBy, critera.IsDesc);
+            return query.OrderByDynamically(criteria.SortBy, criteria.IsDesc);
         }
 
-        public abstract IQueryable<T> Search(SearchCriteria<T> criteria);
+        public abstract IQueryable<T> Search(BaseSearchCriteria criteria);
     }
 }

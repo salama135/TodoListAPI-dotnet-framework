@@ -38,7 +38,7 @@ namespace TodoListAPI.Services
                     searchCriteria.PageIndex,
                     searchCriteria.PageSize);
 
-            result = _unitOfWork.TodoItemRepository.Read(newSearchCriteria);
+            result = _unitOfWork.TodoItemRepository.Get(newSearchCriteria);
             
             IEnumerable<TodoItemDTO> resultDTO = mapper.Map<IEnumerable<TodoItemDTO>>(result);
 

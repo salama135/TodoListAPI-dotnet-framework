@@ -19,7 +19,46 @@ namespace TodoListAPI.Tests.Controllers
         private readonly UsersService service;
         private readonly IUnitOfWork unitOfWork;
         private readonly Mock<IUserRepository> userRepo = new Mock<IUserRepository>();
-        private readonly IQueryable<User> mockedData = Enumerable.Empty<User>().AsQueryable<User>();        
+        //private readonly IQueryable<User> mockedData = Enumerable.Empty<User>().AsQueryable<User>();        
+        private readonly List<User> mockedData = new List<User>()
+        {
+            new User
+            {
+                Id = 1,
+                Name = "ahmed",
+                Password = "123"
+            },
+            new User
+            {
+                Id = 2,
+                Name = "mohamed",
+                Password = "1234"
+            },
+            new User
+            {
+                Id = 3,
+                Name = "ali",
+                Password = "12"
+            },
+            new User
+            {
+                Id = 4,
+                Name = "shehab",
+                Password = "333"
+            },
+            new User
+            {
+                Id = 5,
+                Name = "salah",
+                Password = "111"
+            },
+            new User
+            {
+                Id = 6,
+                Name = "abdullah",
+                Password = "222"
+            }
+        }; 
         
         public UsersServiceUnitTest()
         {
@@ -32,45 +71,7 @@ namespace TodoListAPI.Tests.Controllers
 
         private void SetupData()
         {
-            mockedData.Concat(new[]
-            {
-                new User
-                {
-                    Id = 1,
-                    Name = "ahmed",
-                    Password = "123"
-                },
-                new User
-                {
-                    Id = 2,
-                    Name = "mohamed",
-                    Password = "1234"
-                },
-                new User
-                {
-                    Id = 3,
-                    Name = "ali",
-                    Password = "12"
-                },
-                new User
-                {
-                    Id = 4,
-                    Name = "shehab",
-                    Password = "333"
-                },
-                new User
-                {
-                    Id = 5,
-                    Name = "salah",
-                    Password = "111"
-                },
-                new User
-                {
-                    Id = 6,
-                    Name = "abdullah",
-                    Password = "222"
-                }
-            });
+
         }
 
         [TestMethod]
@@ -80,19 +81,22 @@ namespace TodoListAPI.Tests.Controllers
             string search = null;
             string sort = "Name";
             bool isDesc = false;
-            UserDTO dto = It.IsAny<UserDTO>();
+            User model = null;
             int userId = -1;
             int pageIndex = 0;
             int pageSize = 0;
+            SearchCriteria<User> searchCriteriaForRepo = new SearchCriteria<User>(search, sort, isDesc, model, userId, pageIndex, pageSize);
+                
+            var sortedMockedData = mockedData.OrderBy(p => p.Name).ToList();
 
-            mockedData.OrderByDynamically(sort, isDesc);
-            var sortedMockedData = mockedData.ToList();
-
-            userRepo.Setup(ur => ur.Read(It.IsAny<SearchCriteria<User>>())).Returns(() => sortedMockedData);
-
+            userRepo.Setup(ur => ur.Get(It.IsAny<BaseSearchCriteria>())).Returns(() => sortedMockedData);
+                       
             // Act
+            UserDTO dto = null;
             SearchCriteria<UserDTO> criteriaForSrvice = new SearchCriteria<UserDTO>(search, sort, isDesc, dto, userId, pageIndex, pageSize);
+
             List<UserDTO> returnedUsers = service.Get(criteriaForSrvice).ToList();
+
 
             // Assert
             Assert.IsNotNull(returnedUsers);
@@ -118,10 +122,9 @@ namespace TodoListAPI.Tests.Controllers
             int pageIndex = 0;
             int pageSize = 0;
 
-            mockedData.OrderByDynamically(sort, isDesc);
-            var sortedMockedData = mockedData.ToList();
+            var sortedMockedData = mockedData.OrderByDescending(u => u.Name).ToList();
 
-            userRepo.Setup(ur => ur.Read(It.IsAny<SearchCriteria<User>>())).Returns(() => sortedMockedData);
+            userRepo.Setup(ur => ur.Get(It.IsAny<BaseSearchCriteria>())).Returns(() => sortedMockedData);
 
             // Act
             SearchCriteria<UserDTO> criteriaForSrvice = new SearchCriteria<UserDTO>(search, sort, isDesc, dto, userId, pageIndex, pageSize);
