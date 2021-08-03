@@ -13,6 +13,7 @@ namespace TodoListAPI.Migrations
                 {
                     Id = c.Int(nullable: false, identity: true),
                     Name = c.String(nullable: false),
+                    Password = c.String(nullable: false),
                 })
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.Id);

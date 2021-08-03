@@ -189,6 +189,7 @@
     <Compile Include="AutoMapperConfig\UserProfile.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TodoItemsController.cs" />
+    <Compile Include="Controllers\UserAuthController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Criteria\SearchCriteria.cs" />
@@ -207,6 +208,10 @@
     <Compile Include="Migrations\202108020831587_add_user_model.designer.cs">
       <DependentUpon>202108020831587_add_user_model.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202108021208177_add_user_password_column.cs" />
+    <Compile Include="Migrations\202108021208177_add_user_password_column.Designer.cs">
+      <DependentUpon>202108021208177_add_user_password_column.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\BaseEntity.cs" />
     <Compile Include="Models\TodoItem\TodoItem.cs" />
@@ -217,9 +222,11 @@
     <Compile Include="Repositories\ICrudRepository.cs" />
     <Compile Include="Repositories\CrudRepository.cs" />
     <Compile Include="Repositories\TodoItem\TodoItemRepository.cs" />
+    <Compile Include="Repositories\User\UserAuthRepository.cs" />
     <Compile Include="Repositories\User\UserRepository.cs" />
     <Compile Include="Services\IService.cs" />
     <Compile Include="Services\TodoItem\TodoItemsService.cs" />
+    <Compile Include="Services\User\UserAuthService.cs" />
     <Compile Include="Services\User\UsersService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -311,6 +318,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202108020831587_add_user_model.resx">
       <DependentUpon>202108020831587_add_user_model.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202108021208177_add_user_password_column.resx">
+      <DependentUpon>202108021208177_add_user_password_column.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

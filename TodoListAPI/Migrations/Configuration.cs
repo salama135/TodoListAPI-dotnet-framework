@@ -21,9 +21,9 @@ namespace TodoListAPI.Migrations
             //  to avoid creating duplicate seed data. E.g.
 
             context.Users.AddOrUpdate(x => x.Id,
-                new User() { Id = 1, Name = "Jane Austen" },
-                new User() { Id = 2, Name = "Charles Dickens" },
-                new User() { Id = 3, Name = "Miguel de Cervantes" }
+                new User { Id = 1, Name = "Jane Austen", Password = "123" },
+                new User { Id = 2, Name = "Charles Dickens", Password = "123" },
+                new User { Id = 3, Name = "Miguel de Cervantes", Password = "123" }
             );
 
 

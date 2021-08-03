@@ -10,5 +10,18 @@ namespace TodoListAPI.Models
     {
         [Required]
         public string Name { get; set; }
+        [Required]
+        public string Password { get; set; }
+
+        public User()
+        {
+
+        }
+
+        public User(string name, string password)
+        {
+            Name = name;
+            Password = password;
+        }
     }
 }

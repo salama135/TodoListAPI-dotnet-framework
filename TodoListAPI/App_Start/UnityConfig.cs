@@ -57,9 +57,11 @@ namespace TodoListAPI
 
             container.RegisterType<ITodoItemRepository, TodoItemRepository>();
             container.RegisterType<IUserRepository, UserRepository>();
+            container.RegisterType<IUserAuthRepository, UserAuthRepository>();
             container.RegisterType<IUnitOfWork, UnitOfWork>();
             container.RegisterType<IService<TodoItemDTO>, TodoItemsService>();
             container.RegisterType<IService<UserDTO>, UsersService>();
+            container.RegisterType<IUserAuthService, UserAuthService>();
 
             AutoMapperConfigure.Register();
         }

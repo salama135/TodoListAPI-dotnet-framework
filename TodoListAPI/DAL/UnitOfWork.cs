@@ -16,12 +16,18 @@ namespace TodoListAPI.DAL
 
         public ITodoItemRepository TodoItemRepository { get; set; }
         public IUserRepository UserRepository { get; set; }
+        public IUserAuthRepository UserAuthRepository { get; set; }
 
-        public UnitOfWork(TodoListAPIContext Context, ITodoItemRepository todoItemRepository, IUserRepository userRepository)
+        public UnitOfWork(
+            TodoListAPIContext Context, 
+            ITodoItemRepository todoItemRepository, 
+            IUserRepository userRepository, 
+            IUserAuthRepository userAuthRepository)
         {
             _context = Context;
             TodoItemRepository = todoItemRepository;
             UserRepository = userRepository;
+            UserAuthRepository = userAuthRepository;
         }
 
         public void Save()
