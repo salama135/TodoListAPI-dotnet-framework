@@ -10,16 +10,24 @@ using TodoListAPI.Repositories;
 
 namespace TodoListAPI.DAL
 {
-    public class UnitOfWork : IUnitOfWork<TodoItem>, IDisposable
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private TodoListAPIContext _context;
 
         public ITodoItemRepository TodoItemRepository { get; set; }
+        public IUserRepository UserRepository { get; set; }
+        public IUserAuthRepository UserAuthRepository { get; set; }
 
-        public UnitOfWork(TodoListAPIContext Context, ITodoItemRepository todoItemRepository)
+        public UnitOfWork(
+            TodoListAPIContext Context, 
+            ITodoItemRepository todoItemRepository, 
+            IUserRepository userRepository, 
+            IUserAuthRepository userAuthRepository)
         {
             _context = Context;
             TodoItemRepository = todoItemRepository;
+            UserRepository = userRepository;
+            UserAuthRepository = userAuthRepository;
         }
 
         public void Save()

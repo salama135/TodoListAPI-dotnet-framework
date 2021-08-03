@@ -9,112 +9,104 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
+using TodoListAPI.Criteria;
 using TodoListAPI.Data;
 using TodoListAPI.Models;
+using TodoListAPI.Services;
 
 namespace TodoListAPI.Controllers
 {
     public class UsersController : ApiController
     {
-        private TodoListAPIContext db = new TodoListAPIContext();
+        private IService<UserDTO> service;
 
-        // GET: api/Users
-        public IQueryable<User> GetUsers()
+        public UsersController(IService<UserDTO> _service)
         {
-            return db.Users;
+            service = _service;
         }
 
-        // GET: api/Users/5
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> GetUser(int id)
+        // GET: api/Users
+        [ResponseType(typeof(IEnumerable<UserDTO>))]
+        public IHttpActionResult Get(SearchCriteria<UserDTO> searchCriteria, int? id = null)
         {
-            User user = db.Users.Find(id);
-            if (user == null)
+            if (searchCriteria == null) return BadRequest();
+
+            IEnumerable<UserDTO> dtos = service.Get(searchCriteria);
+
+            if (dtos == null)
             {
                 return NotFound();
             }
 
-            return Ok(user);
+            return Ok(dtos);
         }
 
-        // PUT: api/Users/5
-        [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutUser(int id, User user)
+        // GET: api/Users/5
+        [ResponseType(typeof(UserDTO))]
+        public IHttpActionResult Get(int id)
+        {
+            UserDTO dto = ((UsersService)service).GetByID(id);
+
+            if (dto == null) return BadRequest();
+
+            return Ok(dto);
+        }
+
+        // POST: api/Users
+        [ResponseType(typeof(UserDTO))]
+        public IHttpActionResult Post(UserDTO dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != user.Id)
+            UserDTO createdDto = service.Post(dto);
+
+            if (createdDto == null)
+            {
+                return NotFound();
+            }
+
+            return CreatedAtRoute("DefaultApi", new { id = dto.Id }, dto);
+        }
+
+        // PUT: api/Users/5
+        [ResponseType(typeof(UserDTO))]
+        public IHttpActionResult Put(int id, UserDTO dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != dto.Id)
             {
                 return BadRequest();
             }
 
-            db.Entry(user).State = EntityState.Modified;
+            UserDTO editedDto = service.Put(id, dto);
 
-            try
-            {
-                await db.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/Users
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> PostUser(User user)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.Users.Add(user);
-            await db.SaveChangesAsync();
-
-            return CreatedAtRoute("DefaultApi", new { id = user.Id }, user);
-        }
-
-        // DELETE: api/Users/5
-        [ResponseType(typeof(User))]
-        public async Task<IHttpActionResult> DeleteUser(int id)
-        {
-            User user = db.Users.Find(id);
-            if (user == null)
+            if (editedDto == null)
             {
                 return NotFound();
             }
 
-            db.Users.Remove(user);
-            await db.SaveChangesAsync();
-
-            return Ok(user);
+            return Ok(dto);
         }
 
-        protected override void Dispose(bool disposing)
+        // DELETE: api/Users/5
+        [ResponseType(typeof(void))]
+        public IHttpActionResult Delete(int id)
         {
-            if (disposing)
+            bool successful = service.Delete(id);
+
+            if (successful == false)
             {
-                db.Dispose();
+                return NotFound();
             }
-            base.Dispose(disposing);
-        }
 
-        private bool UserExists(int id)
-        {
-            return db.Users.Count(e => e.Id == id) > 0;
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }

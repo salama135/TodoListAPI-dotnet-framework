@@ -15,11 +15,11 @@ namespace TodoListAPI.Services
 {
     public class TodoItemsService : IService<TodoItemDTO>
     {
-        private IUnitOfWork<TodoItem> _unitOfWork;
+        private IUnitOfWork _unitOfWork;
 
         readonly IMapper mapper = AutoMapperConfigure._mapper;
 
-        public TodoItemsService(IUnitOfWork<TodoItem> unitOfWork)
+        public TodoItemsService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
@@ -34,6 +34,7 @@ namespace TodoListAPI.Services
                     searchCriteria.SortBy,
                     searchCriteria.IsDesc,
                     mapper.Map<TodoItem>(searchCriteria.Entity),
+                    searchCriteria.UserId,
                     searchCriteria.PageIndex,
                     searchCriteria.PageSize);
 
@@ -55,38 +56,46 @@ namespace TodoListAPI.Services
             return resultDTO;
         }
 
-        public TodoItemDTO Post(TodoItemDTO todoItemDTO)
+        public TodoItemDTO Post(TodoItemDTO dto)
         {
-            if (todoItemDTO == null) return null;
+            if (dto == null) return null;
 
-            TodoItem todoItem = mapper.Map<TodoItem>(todoItemDTO);
+            TodoItem model = mapper.Map<TodoItem>(dto);
 
-            TodoItem newTodoItem = _unitOfWork.TodoItemRepository.Create(todoItem);
+            bool exists = _unitOfWork.UserRepository.EnteryExists(dto.UserId);
 
-            bool successful = (newTodoItem != null);
+            if (exists == false) return null; 
+
+            TodoItem createdModel = _unitOfWork.TodoItemRepository.Create(model);
+
+            bool successful = (createdModel != null);
 
             TryToSave(ref successful);
 
             if (successful == false) return null;
 
-            return todoItemDTO;
+            return dto;
         }
 
-        public TodoItemDTO Put(int id, TodoItemDTO todoItemDTO)
+        public TodoItemDTO Put(int id, TodoItemDTO dto)
         {
-            if (todoItemDTO == null) return null;
+            if (dto == null) return null;
 
-            TodoItem todoItem = mapper.Map<TodoItem>(todoItemDTO);
+            TodoItem model = mapper.Map<TodoItem>(dto);
 
-            TodoItem newTodoItem = _unitOfWork.TodoItemRepository.Update(todoItem);
+            bool exists = _unitOfWork.UserRepository.EnteryExists(dto.UserId);
 
-            bool successful = (newTodoItem != null);
+            if (exists == false) return null;
+
+            TodoItem editedModel = _unitOfWork.TodoItemRepository.Update(model);
+
+            bool successful = (editedModel != null);
 
             TryToSave(ref successful);
 
             if (successful == false) return null;
 
-            return todoItemDTO;
+            return dto;
         }
 
         public bool Delete(int id)

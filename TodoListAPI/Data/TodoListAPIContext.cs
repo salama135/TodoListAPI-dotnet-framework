@@ -21,6 +21,8 @@ namespace TodoListAPI.Data
         }
 
         public IDbSet<TodoItem> TodoItems { get; set; }
+        public static string TodoItemsTableName = "Users";
         public IDbSet<User> Users { get; set; }
+        public static string UsersTableName = "Users";
     }
 }

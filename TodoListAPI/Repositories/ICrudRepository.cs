@@ -17,5 +17,7 @@ namespace TodoListAPI.Repositories
         T Update(T Item);
 
         bool Delete(int id);
+
+        bool EnteryExists(int id);
     }
 }

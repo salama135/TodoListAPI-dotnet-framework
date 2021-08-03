@@ -28,18 +28,18 @@ namespace TodoListAPI.Controllers
 
         // GET: api/TodoItems
         [ResponseType(typeof(IEnumerable<TodoItemDTO>))]
-        public IHttpActionResult Get(SearchCriteria<TodoItemDTO> todoItemSearchCriteria, int? id = null)
+        public IHttpActionResult Get(SearchCriteria<TodoItemDTO> searchCriteria, int? id = null)
         {
-            if(todoItemSearchCriteria == null) return BadRequest();
+            if(searchCriteria == null) return BadRequest();
 
-            IEnumerable<TodoItemDTO> todoItemDTOs = service.Get(todoItemSearchCriteria);
+            IEnumerable<TodoItemDTO> result = service.Get(searchCriteria);
 
-            if (todoItemDTOs == null)
+            if (result == null)
             {
                 return NotFound();
             }
 
-            return Ok(todoItemDTOs);
+            return Ok(result);
         }
 
         // GET: api/TodoItems/5

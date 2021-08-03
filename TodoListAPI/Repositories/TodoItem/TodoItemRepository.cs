@@ -22,12 +22,13 @@ namespace TodoListAPI.Repositories
 
         public override IQueryable<TodoItem> Search(SearchCriteria<TodoItem> criteria)
         {
-            var query = context.TodoItems.Where(t => string.IsNullOrEmpty(criteria.Search) ||
-                                                        t.Title.Contains(criteria.Search));
+            var query = context.TodoItems
+                .Where(t => string.IsNullOrEmpty(criteria.Search) || t.Title.Contains(criteria.Search))
+                .Where(t => criteria.UserId >= 0 && t.UserId == criteria.UserId);
+
             // creationDate < 1-1-2020
             // Contains("title")
             // id = 28
-
 
             return query;
         }
