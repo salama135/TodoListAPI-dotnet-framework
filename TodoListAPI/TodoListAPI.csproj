@@ -188,9 +188,9 @@
     <Compile Include="AutoMapperConfig\TodoItemProfile.cs" />
     <Compile Include="AutoMapperConfig\UserProfile.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\TodoItemsController.cs" />
-    <Compile Include="Controllers\UserAuthController.cs" />
-    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\TodoItem\TodoItemsController.cs" />
+    <Compile Include="Controllers\User\UserAuthController.cs" />
+    <Compile Include="Controllers\User\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Criteria\SearchCriteria.cs" />
     <Compile Include="DAL\IUnitOfWork.cs" />
