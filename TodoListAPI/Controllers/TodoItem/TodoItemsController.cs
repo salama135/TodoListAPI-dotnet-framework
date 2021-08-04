@@ -86,7 +86,7 @@ namespace TodoListAPI.Controllers
                 return BadRequest();
             }
 
-            TodoItemDTO newtodoItem = service.Put(id, todoItem);
+            TodoItemDTO newtodoItem = service.Put(todoItem);
 
             if (newtodoItem == null)
             {

@@ -26,7 +26,6 @@ namespace TodoListAPI.Services
         {
             IEnumerable<User> result;
 
-
             result = _unitOfWork.UserRepository.Get(searchCriteria);
 
             IEnumerable<UserDTO> resultDTO = mapper.Map<IEnumerable<UserDTO>>(result);
@@ -62,7 +61,7 @@ namespace TodoListAPI.Services
             return dto;
         }
 
-        public UserDTO Put(int id, UserDTO dto)
+        public UserDTO Put(UserDTO dto)
         {
             if (dto == null) return null;
 
@@ -92,7 +91,8 @@ namespace TodoListAPI.Services
         {
             try
             {
-                if (successful) _unitOfWork.Save();
+                if (successful)
+                    successful = _unitOfWork.Save();
             }
             catch (DbUpdateConcurrencyException)
             {

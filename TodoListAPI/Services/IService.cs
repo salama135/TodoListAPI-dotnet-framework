@@ -12,7 +12,7 @@ namespace TodoListAPI.Services
     {
         IEnumerable<T> Get(SearchCriteria<T> searchCriteria);
         T Post(T dto);
-        T Put(int id, T dto);
+        T Put(T dto);
         bool Delete(int id);
     }
 }
