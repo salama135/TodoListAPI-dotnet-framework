@@ -17,6 +17,6 @@ namespace TodoListAPI.DAL
         IUserRepository UserRepository { get; set; }
         IUserAuthRepository UserAuthRepository { get; set; }
 
-        void Save();
+        bool Save();
     }
 }

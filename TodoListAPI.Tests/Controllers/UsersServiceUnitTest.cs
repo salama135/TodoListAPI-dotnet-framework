@@ -17,9 +17,8 @@ namespace TodoListAPI.Tests.Controllers
     public class UsersServiceUnitTest
     {
         private readonly UsersService service;
-        private readonly IUnitOfWork unitOfWork;
-        private readonly Mock<IUserRepository> userRepo = new Mock<IUserRepository>();
-        //private readonly IQueryable<User> mockedData = Enumerable.Empty<User>().AsQueryable<User>();        
+        private readonly Mock<IUnitOfWork> mockUnitOfWork;
+        private readonly Mock<IUserRepository> userRepo;
         private readonly List<User> mockedData = new List<User>()
         {
             new User
@@ -63,15 +62,13 @@ namespace TodoListAPI.Tests.Controllers
         public UsersServiceUnitTest()
         {
             AutoMapperConfigure.Register();
-            SetupData();
 
-            unitOfWork = new UnitOfWork(null, null, userRepo.Object, null);
-            service = new UsersService(unitOfWork);
-        }
+            userRepo = new Mock<IUserRepository>();
+            mockUnitOfWork = new Mock<IUnitOfWork>();
+            mockUnitOfWork.Setup(uow => uow.UserRepository).Returns(() => userRepo.Object);
+            mockUnitOfWork.Setup(uow => uow.Save()).Returns(true);
 
-        private void SetupData()
-        {
-
+            service = new UsersService(mockUnitOfWork.Object);
         }
 
         [TestMethod]
@@ -182,6 +179,56 @@ namespace TodoListAPI.Tests.Controllers
 
             // Assert
             Assert.IsNull(returnedUser);
+        }
+
+        [TestMethod]
+        public void PostUser_shouldReturnPostedUser_WhenUserProvided()
+        {
+            User model = mockedData[0]; 
+
+            // Arrange
+            userRepo.Setup(ur => ur.Create(It.IsAny<User>())).Returns(model);
+
+            // Act
+            UserDTO dto = AutoMapperConfigure._mapper.Map<UserDTO>(model);
+            UserDTO returnedUser = service.Post(dto);
+
+            // Assert
+            Assert.IsNotNull(returnedUser);
+            Assert.AreEqual(dto, returnedUser);
+        }
+
+        [TestMethod]
+        public void PutUser_shouldReturnUpdatedUser_WhenUserProvided()
+        {
+            User model = mockedData[0];
+
+            // Arrange
+            userRepo.Setup(ur => ur.Update(It.IsAny<User>())).Returns(model);
+
+            // Act
+            UserDTO dto = AutoMapperConfigure._mapper.Map<UserDTO>(model);
+            UserDTO returnedUser = service.Put(dto);
+
+            // Assert
+            Assert.IsNotNull(returnedUser);
+            Assert.AreEqual(dto, returnedUser);
+        }
+
+        [TestMethod]
+        public void DeleteUser_shouldReturnTrue_WhenUserExists()
+        {
+            User model = mockedData[0];
+
+            // Arrange
+            userRepo.Setup(ur => ur.Delete(It.IsAny<int>())).Returns(true);
+
+            // Act
+            UserDTO dto = AutoMapperConfigure._mapper.Map<UserDTO>(model);
+            bool result = service.Delete(model.Id);
+
+            // Assert
+            Assert.IsTrue(result);
         }
     }
 }

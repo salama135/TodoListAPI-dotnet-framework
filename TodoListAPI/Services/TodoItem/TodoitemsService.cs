@@ -77,7 +77,7 @@ namespace TodoListAPI.Services
             return dto;
         }
 
-        public TodoItemDTO Put(int id, TodoItemDTO dto)
+        public TodoItemDTO Put(TodoItemDTO dto)
         {
             if (dto == null) return null;
 
@@ -111,7 +111,8 @@ namespace TodoListAPI.Services
         {
             try
             {
-                if (successful) _unitOfWork.Save();
+                if (successful)
+                    successful = _unitOfWork.Save();
             }
             catch (DbUpdateConcurrencyException)
             {

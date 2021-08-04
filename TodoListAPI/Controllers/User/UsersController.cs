@@ -85,7 +85,7 @@ namespace TodoListAPI.Controllers
                 return BadRequest();
             }
 
-            UserDTO editedDto = service.Put(id, dto);
+            UserDTO editedDto = service.Put(dto);
 
             if (editedDto == null)
             {

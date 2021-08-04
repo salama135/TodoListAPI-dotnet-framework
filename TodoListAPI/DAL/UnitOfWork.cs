@@ -30,9 +30,9 @@ namespace TodoListAPI.DAL
             UserAuthRepository = userAuthRepository;
         }
 
-        public void Save()
+        public bool Save()
         {
-            _context.SaveChanges();
+            return _context.SaveChanges() > 0;
         }
 
         private bool disposed = false;
