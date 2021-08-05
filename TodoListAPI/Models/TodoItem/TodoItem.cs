@@ -14,8 +14,8 @@ namespace TodoListAPI.Models
         public bool IsDone { get; set; } = false;
         public string Description { get; set; }
         
-        // Foreign Key
         public int UserId { get; set; }
+        public User User { get; set; }
 
         public TodoItem()
         {

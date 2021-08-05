@@ -33,11 +33,18 @@ namespace TodoListAPI.Services
             return resultDTO;
         }
 
+        //T getType(LevelDTO)
+        //{
+        //    return mapper.Map<T>(dto);
+        //}
+
         public UserDTO Post(UserDTO dto)
         {
             if (dto == null) return null;
 
             User model = mapper.Map<User>(dto);
+
+            // Room room = mapper.Map<Room>(dto);
 
             User createdModel = _unitOfWork.UserRepository.Create(model);
 
