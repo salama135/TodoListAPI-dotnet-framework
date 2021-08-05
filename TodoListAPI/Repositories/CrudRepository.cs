@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Web;
 using TodoListAPI.Criteria;
@@ -55,7 +56,11 @@ namespace TodoListAPI.Repositories
 
         protected void MarkAsModified(T Item)
         {
-            context.Entry(Item).State = EntityState.Modified;
+            var local = context.Set<T>()
+                         .Local
+                         .FirstOrDefault(f => f.Id == Item.Id);
+
+            context.Entry(local).State = EntityState.Modified;
         }
 
         public bool Delete(int id)

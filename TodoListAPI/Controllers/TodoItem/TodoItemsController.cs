@@ -58,7 +58,7 @@ namespace TodoListAPI.Controllers
                 return NotFound();
             }
 
-            return CreatedAtRoute("DefaultApi", new { id = todoItem.Id }, todoItem);
+            return CreatedAtRoute("DefaultApi", new { id = newtodoItem.Id }, newtodoItem);
         }
 
         // PUT: api/TodoItems/5
@@ -82,7 +82,7 @@ namespace TodoListAPI.Controllers
                 return NotFound();
             }
 
-            return Ok(todoItem);
+            return Ok(newtodoItem);
         }
 
         // DELETE: api/TodoItems/5

@@ -31,7 +31,19 @@ namespace TodoListAPI.Migrations
                 })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Users", t => t.UserId, cascadeDelete: true)
-                .Index(t => t.UserId);            
+                .Index(t => t.UserId);
+
+            CreateTable(
+                "dbo.Tests",
+                c => new
+                {
+                    TestId = c.Int(nullable: false, identity: true),
+                    TestName = c.String(nullable: false),
+                    ParentId = c.Int(nullable: false),
+                })
+                .PrimaryKey(t => t.TestId)
+                .ForeignKey("dbo.Tests", t => t.ParentId, cascadeDelete: true)
+                .Index(t => t.TestId);
         }
         
         public override void Down()

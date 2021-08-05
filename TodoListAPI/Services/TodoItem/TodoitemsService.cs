@@ -54,7 +54,9 @@ namespace TodoListAPI.Services
 
             if (successful == false) return null;
 
-            return dto;
+            TodoItemDTO editedDto = mapper.Map<TodoItemDTO>(createdModel);
+
+            return editedDto;
         }
 
         public TodoItemDTO Put(TodoItemDTO dto)
@@ -75,7 +77,9 @@ namespace TodoListAPI.Services
 
             if (successful == false) return null;
 
-            return dto;
+            TodoItemDTO editedDto = mapper.Map<TodoItemDTO>(editedModel);
+
+            return editedDto;
         }
 
         public bool Delete(int id)
