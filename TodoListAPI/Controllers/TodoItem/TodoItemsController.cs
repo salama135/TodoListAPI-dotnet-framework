@@ -42,17 +42,6 @@ namespace TodoListAPI.Controllers
             return Ok(result);
         }
 
-        // GET: api/TodoItems/5
-        [ResponseType(typeof(TodoItemDTO))]
-        public IHttpActionResult Get(int id)
-        {
-            TodoItemDTO todoItem = ((TodoItemsService)service).GetByID(id);
-
-            if (todoItem == null) return BadRequest();
-
-            return Ok(todoItem);
-        }
-
         // POST: api/TodoItems
         [ResponseType(typeof(TodoItemDTO))]
         public IHttpActionResult Post(TodoItemDTO todoItem)

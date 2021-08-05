@@ -11,7 +11,7 @@ namespace TodoListAPI.Repositories
 {
     public interface ITodoItemRepository : ICrudRepository<TodoItem>
     {
-        TodoItem GetByID(int id);
+
     }
 
     public class TodoItemRepository : CrudRepository<TodoItem>, ITodoItemRepository
@@ -24,18 +24,14 @@ namespace TodoListAPI.Repositories
         {
             var query = context.TodoItems
                 .Where(t => string.IsNullOrEmpty(criteria.Search) || t.Title.Contains(criteria.Search))
-                .Where(t => criteria.UserId >= 0 && t.UserId == criteria.UserId);
+                .Where(t => criteria.UserId >= 0 && t.UserId == criteria.UserId)
+                .Where(t => (criteria.ItemId >= 0 && t.Id == criteria.ItemId) || (criteria.ItemId < 0));
 
             // creationDate < 1-1-2020
             // Contains("title")
             // id = 28
 
             return query;
-        }
-
-        public TodoItem GetByID(int id)
-        {
-            return context.TodoItems.Find(id);
         }
     }
 }

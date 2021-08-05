@@ -24,37 +24,17 @@ namespace TodoListAPI.Services
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<TodoItemDTO> Get(SearchCriteria<TodoItemDTO> searchCriteria)
+        public IEnumerable<TodoItemDTO> Get(BaseSearchCriteria searchCriteria)
         {
             IEnumerable<TodoItem> result;
 
-            SearchCriteria<TodoItem> newSearchCriteria =
-                new SearchCriteria<TodoItem>(
-                    searchCriteria.Search,
-                    searchCriteria.SortBy,
-                    searchCriteria.IsDesc,
-                    mapper.Map<TodoItem>(searchCriteria.Entity),
-                    searchCriteria.UserId,
-                    searchCriteria.PageIndex,
-                    searchCriteria.PageSize);
-
-            result = _unitOfWork.TodoItemRepository.Get(newSearchCriteria);
+            result = _unitOfWork.TodoItemRepository.Get(searchCriteria);
             
             IEnumerable<TodoItemDTO> resultDTO = mapper.Map<IEnumerable<TodoItemDTO>>(result);
 
             return resultDTO;
         }
 
-        public TodoItemDTO GetByID(int id)
-        {
-            TodoItem result;
-
-            result = _unitOfWork.TodoItemRepository.GetByID(id);
-
-            TodoItemDTO resultDTO = mapper.Map<TodoItemDTO>(result);
-
-            return resultDTO;
-        }
 
         public TodoItemDTO Post(TodoItemDTO dto)
         {
