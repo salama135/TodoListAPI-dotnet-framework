@@ -22,24 +22,13 @@ namespace TodoListAPI.Services
             _unitOfWork = unitOfWork;
         }
 
-        public IEnumerable<UserDTO> Get(SearchCriteria<UserDTO> searchCriteria)
+        public IEnumerable<UserDTO> Get(BaseSearchCriteria searchCriteria)
         {
             IEnumerable<User> result;
 
             result = _unitOfWork.UserRepository.Get(searchCriteria);
 
             IEnumerable<UserDTO> resultDTO = mapper.Map<IEnumerable<UserDTO>>(result);
-
-            return resultDTO;
-        }
-
-        public UserDTO GetByID(int id)
-        {
-            User result;
-
-            result = _unitOfWork.UserRepository.GetByID(id);
-
-            UserDTO resultDTO = mapper.Map<UserDTO>(result);
 
             return resultDTO;
         }

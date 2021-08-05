@@ -140,48 +140,6 @@ namespace TodoListAPI.Tests.Controllers
         }
 
         [TestMethod]
-        public void GetByID_shouldReturnUser_WhenUserExists()
-        {
-            // Arrange
-            int userId = 1;
-            string userName = "Ahmed";
-            string userPassword = "1234";
-
-            User user = new User
-            {
-                Id = userId,
-                Name = userName,
-                Password = userPassword
-            };
-
-            userRepo.Setup(ur => ur.GetByID(userId)).Returns(user);
-
-            // Act
-            UserDTO returnedUser = service.GetByID(userId);
-
-            // Assert
-            Assert.IsNotNull(returnedUser);
-            Assert.AreEqual(returnedUser.Id, userId);
-            Assert.AreEqual(returnedUser.Name, userName);
-            Assert.AreEqual(returnedUser.Password, userPassword);
-        }
-
-        [TestMethod]
-        public void GetByID_shouldReturnNothing_WhenUserDoesnotExists()
-        {
-            int userId = -1;
-
-            // Arrange
-            userRepo.Setup(ur => ur.GetByID(It.IsAny<int>())).Returns(() => null);
-
-            // Act
-            UserDTO returnedUser = service.GetByID(userId);
-
-            // Assert
-            Assert.IsNull(returnedUser);
-        }
-
-        [TestMethod]
         public void PostUser_shouldReturnPostedUser_WhenUserProvided()
         {
             User model = mockedData[0]; 

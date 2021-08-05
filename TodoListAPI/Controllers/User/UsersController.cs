@@ -41,17 +41,6 @@ namespace TodoListAPI.Controllers
             return Ok(dtos);
         }
 
-        // GET: api/Users/5
-        [ResponseType(typeof(UserDTO))]
-        public IHttpActionResult Get(int id)
-        {
-            UserDTO dto = ((UsersService)service).GetByID(id);
-
-            if (dto == null) return BadRequest();
-
-            return Ok(dto);
-        }
-
         // POST: api/Users
         [ResponseType(typeof(UserDTO))]
         public IHttpActionResult Post(UserDTO dto)
