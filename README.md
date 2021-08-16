@@ -2,7 +2,7 @@
 
  A simple todo list api using dotnet framework 
  
-![The Clean Architecture](images/image1.png "image_tooltip")
+![The Clean Architecture](images/CleanArchitecture.jpg "image_tooltip")
 
 ### Clean Architecture
 
